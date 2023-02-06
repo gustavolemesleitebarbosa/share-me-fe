@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
-import { fetchUser, fetchUserId } from '../utils/fetchUser'
+import {fetchUserId } from '../utils/fetchUser'
 import { MdDownloadForOffline } from 'react-icons/md'
 import { AiTwotoneDelete } from 'react-icons/ai'
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs'
@@ -41,7 +41,7 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) =>
       .then(() => {
         fetchPins()
         // window.location.reload()
-      }).catch(()=>console.log(console.log('heyerror')))
+      })
   }
 
   return (

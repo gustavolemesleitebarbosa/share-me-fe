@@ -13,7 +13,6 @@ const Feed = () => {
   const fetchPins = useCallback(()=>{
     setLoading(true)
     if(categoryId){
-  
       // create a query first because it does have parameters
       const query = searchQuery(categoryId)
       client.fetch(query).then((data)=>{
@@ -25,7 +24,6 @@ const Feed = () => {
     else{
     // does not  need top create a query first because it does not have parameters
       client.fetch(feedQuery).then((data)=>{
-        console.log('all pins',data)
         setPins(data)
         setLoading(false)
       })
@@ -37,6 +35,7 @@ const Feed = () => {
    }, [categoryId, fetchPins])
 
    if (loading) return <Spinner message={`We are adding new ideas to your feed!`} />
+   if (!pins?.length) return <h2> No pins available</h2>
 
   return (
     <div> {pins && <MansoryLayout pins={pins} fetchPins={fetchPins}/>}</div>
