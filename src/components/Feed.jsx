@@ -8,11 +8,12 @@ import Spinner from './Spinner'
 const Feed = () => {
   const [loading, setLoading] = useState(false)
   const [pins, setPins] = useState(null)
-  const {categoryId}= useParams()
+  const { categoryId }= useParams()
 
   const fetchPins = useCallback(()=>{
     setLoading(true)
     if(categoryId){
+  
       // create a query first because it does have parameters
       const query = searchQuery(categoryId)
       client.fetch(query).then((data)=>{
