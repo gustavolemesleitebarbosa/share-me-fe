@@ -22,9 +22,8 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) =>
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
           _key: uuidV4(),
-          user: userInfoId,
+          userId: userInfoId,
           postedBy: {
-            _key: uuidV4(),
             _type: 'postedBy',
             _ref: userInfoId
           }
@@ -35,6 +34,7 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) =>
         })
     }
   }
+
   const deletePin = (id) => {
     client
       .delete(id)

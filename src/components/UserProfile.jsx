@@ -36,7 +36,6 @@ const UserProfile = () => {
       const createdPinsQuery = userCreatedPinsQuery(userId)
       client.fetch(createdPinsQuery)
       .then((data) => {
-          console.log('over here',data)
           setPins(data)
         })
     }
@@ -44,7 +43,7 @@ const UserProfile = () => {
       const savedPinsQuery = userSavedPinsQuery(userId)
       client.fetch(savedPinsQuery)
       .then((data) => {
-        console.log('over here',data)
+        console.log('saved pin data here',data)
           setPins(data)
         })
     }
