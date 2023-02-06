@@ -4,23 +4,12 @@ import logo from '../assets/logowhite.png'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { GoogleLogin } from '@react-oauth/google'
-import {client} from '../client'
+import { client } from '../client'
+import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
   const navigate = useNavigate()
-  const googleResponse = (response) => {
-    localStorage.setItem('user', JSON.stringify(jwt_decode(response.credential)))
-    localStorage.setItem('client_id',response.clientId )
-    const { name, given_name, email, picture } = jwt_decode(response.credential)
-    const googleId = response.clientId
-    const doc ={
-      _id: googleId,
-      _type: 'user',
-      userName: name,
-      image: picture
-    }
-    client.createIfNotExists(doc).then(()=>{navigate('/',{replace: true})})
-  }
+  const { googleResponse } = useAuth()
 
   return (
     <div className=' flex justify-start items-center flex-col h-screen'>
@@ -40,7 +29,7 @@ const Login = () => {
           </div>
           <div className='shadow-2xl'>
             <GoogleLogin
-              onSuccess={(response) => googleResponse(response)}
+              onSuccess={(response) => googleResponse(response, () => { navigate('/', { replace: true }) })}
               onError={(error) => console.log(error)}
             />
           </div>

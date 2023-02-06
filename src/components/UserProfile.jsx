@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { useParams, useNavigate } from 'react-router-dom'
-import { googleLogout } from '@react-oauth/google'
+import { useAuth } from '../hooks/useAuth'
 
 import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/data'
 import { client } from '../client'
@@ -23,7 +23,7 @@ const UserProfile = () => {
 
 
   useEffect(() => {
-    console.log('id of the user', userId) 
+    console.log('id of the user', userId)
     const query = userQuery(userId)
     client.fetch(query)
       .then((data) => {
@@ -32,29 +32,26 @@ const UserProfile = () => {
   }, [userId])
 
   useEffect(() => {
-    if(text=== 'Created'){
+    if (text === 'Created') {
       const createdPinsQuery = userCreatedPinsQuery(userId)
       client.fetch(createdPinsQuery)
-      .then((data) => {
+        .then((data) => {
           setPins(data)
         })
     }
-    else{
+    else {
       const savedPinsQuery = userSavedPinsQuery(userId)
       client.fetch(savedPinsQuery)
-      .then((data) => {
-        console.log('saved pin data here',data)
+        .then((data) => {
+          console.log('saved pin data here', data)
           setPins(data)
         })
     }
   }, [text, userId])
-  
 
-  const logout =() => {
-     localStorage.clear()
-     googleLogout()
-     navigate('/login')
-  }
+
+  const { logout } = useAuth()
+
 
   if (!user) {
     return (<Spinner message='Loading profile' />)
@@ -62,59 +59,59 @@ const UserProfile = () => {
 
   return (
     <div className='relative pb-2 h-full justify-center items-center '>
-      <div  className='flex flex-col pb-5'>
-        <div  className=' relative flex flex-col mb-7'>
+      <div className='flex flex-col pb-5'>
+        <div className=' relative flex flex-col mb-7'>
           <div className='flex flex-col justify-center items-center opacity-90'>
             <img
-            src={randomImage}
-            className='w-full h-370 2xl:h-510 shadow-lg object-cover'
-            alt='banner-pic'
+              src={randomImage}
+              className='w-full h-370 2xl:h-510 shadow-lg object-cover'
+              alt='banner-pic'
             />
             <img
-            className='rounded-full w-20 h-20 -mt-10  shadow-xl object-cover'
-            alt='user-pic'
-            src ={user?.image}
+              className='rounded-full w-20 h-20 -mt-10  shadow-xl object-cover'
+              alt='user-pic'
+              src={user?.image}
             />
             <h1 className='font-bold text-3xl text-center mt-3'>
               {user?.userName}
             </h1>
             <div className='absolute top-0 z-100 right-0 p-2'>
-              {userId=== user._id
-              && (<button className='flex flex-row gap-2 items-center bg-slate-300 opacity-65 rounded-full p-4' onClick={logout}>
-                <AiOutlineLogout color='red' fontSize={21} />
-                <div className='text-red-500 font-bold'>Logout</div>
-              </button>)
-              }            
+              {userId === user._id
+                && (<button className='flex flex-row gap-2 items-center bg-slate-300 opacity-65 rounded-full p-4' onClick={() => { logout(() => { navigate('/login') }) }}>
+                  <AiOutlineLogout color='red' fontSize={21} />
+                  <div className='text-red-500 font-bold'>Logout</div>
+                </button>)
+              }
             </div>
           </div>
           <div>
             <div className='text-center mb-7'>
-             <button type="button"
-             onClick={(e)=>{
-              setText(e.target.textContent);
-              setActiveBtn('created')
-             }}
-             className={`${activeBtn=== 'created'? activeBtnStyles: notActiveBtnStyles}`}
-             >
-              Created
-             </button>
-             <button type="button"
-             onClick={(e)=>{
-              setText(e.target.textContent);
-              setActiveBtn('saved')
-             }}
-             className={`${activeBtn=== 'saved'? activeBtnStyles: notActiveBtnStyles}`}
-             >
-              Saved
-             </button>
+              <button type="button"
+                onClick={(e) => {
+                  setText(e.target.textContent);
+                  setActiveBtn('created')
+                }}
+                className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}
+              >
+                Created
+              </button>
+              <button type="button"
+                onClick={(e) => {
+                  setText(e.target.textContent);
+                  setActiveBtn('saved')
+                }}
+                className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
+              >
+                Saved
+              </button>
 
-             <div className='px-2'>
-              {pins?.length?( <MansoryLayout pins={pins}/>):
-              <div className='flex justify-center font-bold  items-center w-full text-xl mt-2 '>
-                No Pins Found
+              <div className='px-2'>
+                {pins?.length ? (<MansoryLayout pins={pins} />) :
+                  <div className='flex justify-center font-bold  items-center w-full text-xl mt-2 '>
+                    No Pins Found
+                  </div>
+                }
               </div>
-              }
-             </div>
             </div>
           </div>
         </div>
