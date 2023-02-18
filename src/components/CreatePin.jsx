@@ -21,8 +21,43 @@ const CreatePin = ({ user }) => {
 
   const navigate = useNavigate()
 
+  const handleOndragOver = event => {
+    event.preventDefault();
+}
+const handleOndrop = event => {
+    event.preventDefault(); 
+    event.stopPropagation(); 
+    let imageFile = event.dataTransfer.files[0];
+    handleFile(imageFile)
+}
+
+const handleFile = file => {
+  uploadImageFromDnD(file);
+}
+
+
+const uploadImageFromDnD = ( file) => {
+  const {type} = file;
+  if (type === 'image/png' || type === 'image/svg' || type === 'image/jpeg' || type === 'image/gif' || type === 'image/tiff') {
+    setWrongImageType(false)
+    setLoading(true)
+    client.assets.upload('image',file, {
+      contentType: type,
+      filename: file
+    }).then((document) => {
+      setImageAsset(document)
+      setLoading(false)
+    })
+  }
+  else {
+    setWrongImageType(true)
+  }
+}
+
+
   const uploadImage = (e) => {
     const { type, name } = e.target.files[0]
+    console.log('file non  a',e.target.files[0])
     if (type === 'image/png' || type === 'image/svg' || type === 'image/jpeg' || type === 'image/gif' || type === 'image/tiff') {
       setWrongImageType(false)
       setLoading(true)
@@ -86,13 +121,17 @@ const CreatePin = ({ user }) => {
             {loading && <Spinner />}
             {wrongImageType && <p> Wrong image type</p>}
             {!imageAsset ? (
-              <label>
+              <label    onDragOver = {handleOndragOver}
+              onDrop = {handleOndrop}>
                 <div className='flex  flex-col items-center justify-center h-full'>
                   <div className='flex flex-col justify-center items-center'>
                     <p className='font-bold text-2xl'>
                       <AiOutlineCloudUpload />
                     </p>
-                    <p className='text-lg'> Click to upload</p>
+                    <div className='text-lg flex  flex-col justify-center items-center'>
+                      <p className='text-lg' > Click  here to upload or </p>
+                      <p className='text-lg '> drag and drop</p>
+                    </div>
                   </div>
                   <p className='mt-32 text-grey-400'> Use high-quality JPG SVG PNG GIF less than 20MB </p>
                 </div>
