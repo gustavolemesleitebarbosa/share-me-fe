@@ -1,20 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { HiMenu } from 'react-icons/hi'
 import { AiFillCloseCircle } from 'react-icons/ai'
+import { HiMenu } from 'react-icons/hi'
 import { Link, Route, Routes } from 'react-router-dom'
 
-import { Sidebar, UserProfile } from '../components'
-import { client } from '../client'
-import Pins from './Pins'
-import { userQuery } from '../utils/data'
 import logo from '../assets/logo.png'
+import { client } from '../client'
+import { Sidebar, UserProfile } from '../components'
+import { userQuery } from '../utils/data'
+import Pins from './Pins'
 
 const Home = () => {
   const [toggleSideBar, setToggleSideBar] = useState(false)
   const [user, setUser] = useState(null)
   const scrollRef = useRef(null)
 
-  
 
   useEffect(() => {
     const userInfoId = localStorage.getItem('client_id')!== undefined ?localStorage.getItem('client_id'):localStorage.clear()
@@ -28,6 +27,11 @@ const Home = () => {
     scrollRef.current.scrollTo(0, 0)
   }, [])
 
+  useEffect(() => {
+   console.log('user',user)
+  }, [])
+  
+
 
   return (
     <div className='flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out' >
@@ -40,7 +44,7 @@ const Home = () => {
           <Link to="/">
             <img src={logo} className="w-28" alt='logo' />
           </Link>
-          <Link to={`user-profile/${user?.id}`}>
+          <Link to={`user-profile/${user?._id}`}>
             <img src={user?.image} className="w-28" alt='logo' />
           </Link>
         </div>
@@ -56,7 +60,7 @@ const Home = () => {
       </div>
         <div className='pb-2 flex-1 h-screen overflow-y-scroll' ref={scrollRef}>
           <Routes>
-            <Route path="/user-profile/:userId" element={<UserProfile />} />
+            <Route path="/user-profile/:userId" element={<UserProfile userId={user && user} />} />
             <Route path="/*" element={<Pins user={user && user} />} />
           </Routes>
         </div>

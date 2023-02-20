@@ -1,7 +1,7 @@
-import React, { createContext, useState, useContext } from 'react';
+import { googleLogout } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
+import React, { createContext, useContext, useState } from 'react';
 import { client } from '../client';
-import { googleLogout } from '@react-oauth/google'
-import jwt_decode from 'jwt-decode'
 
 export const AuthContext = createContext(
   {},
@@ -18,16 +18,17 @@ export const AuthProvider = ({ children }) => {
 
   const googleResponse = (response, callback) => {
     localStorage.setItem('user', JSON.stringify(jwt_decode(response.credential)))
-    localStorage.setItem('client_id',response.clientId )
-    const { name, given_name, email, picture } = jwt_decode(response.credential)
+    const { name, given_name, email, picture, sub } = jwt_decode(response.credential)
+    localStorage.setItem('client_id',sub )
     const googleId = response.clientId
+
     const doc ={
-      _id: googleId,
+      _id: sub,
       _type: 'user',
       userName: name,
       image: picture
     }
-    console.log('bumba', response.clientId)
+    console.log('testing', response.clientId)
     setData(response.clientId )
     client.createIfNotExists(doc).then(()=>{callback()})
   }

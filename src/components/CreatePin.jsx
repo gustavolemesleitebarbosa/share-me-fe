@@ -57,7 +57,6 @@ const uploadImageFromDnD = ( file) => {
 
   const uploadImage = (e) => {
     const { type, name } = e.target.files[0]
-    console.log('file non  a',e.target.files[0])
     if (type === 'image/png' || type === 'image/svg' || type === 'image/jpeg' || type === 'image/gif' || type === 'image/tiff') {
       setWrongImageType(false)
       setLoading(true)
