@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { v4 as uuidV4 } from 'uuid'
-import {fetchUserId } from '../utils/fetchUser'
-import { MdDownloadForOffline } from 'react-icons/md'
 import { AiTwotoneDelete } from 'react-icons/ai'
 import { BsFillArrowUpRightCircleFill } from 'react-icons/bs'
+import { MdDownloadForOffline } from 'react-icons/md'
+import { Link, useNavigate } from 'react-router-dom'
+import { v4 as uuidV4 } from 'uuid'
+import { fetchUserId } from '../utils/fetchUser'
 
 import { client, urlFor } from '../client'
+import PlaceholderImage from './PlaceholderImage'
 
 const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) => {
 
@@ -52,7 +53,7 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) =>
         onClick={() => navigate(`/pin-detail/${_id}`)}
         className=" relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-100 ease-in-out"
       >
-        <img className='rounded-lg w-full' alt='user-post' src={urlFor(image).width(250).url()} />
+        <PlaceholderImage className='rounded-lg w-full' alt='user-post' src={urlFor(image).width(250).url()} />
         {postHovered && (
           <div
             className='absolute top-0 w-full h-full flex flex-col justify-between p-1n pr-2 pb-2 z-50'
@@ -81,7 +82,7 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) =>
               {destination && (
                 <a href={destination}
                   onClick={(e)=>{e.stopPropagation()}}
-                  target="_blak"
+                  target="_blank"
                   rel="noreferrer"
                   className='bg-white flex items-center gap-2  text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:100 hover:shadow-md'
                 >
