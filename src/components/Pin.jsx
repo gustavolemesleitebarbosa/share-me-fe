@@ -106,12 +106,12 @@ const Pin = ({ pin: { postedBy, image, _id, destination, save }, fetchPins }) =>
         )}
       </div>
        <Link to ={`/user-profile/${postedBy?._id}`} className="flex mt-3 ml-2 gap-2 items-center">
-         <img
+         <PlaceholderImage
           className='w-8 h-8 rounded-full object-cover'
           src={postedBy.image}
           alt ="user-profile"
+          userName = {postedBy.userName.split(" ")[0]}
          />
-         <p className='font-semibold capitalize'>{postedBy.userName.split(" ")[0]}</p>
        </Link>
     </div>
   )

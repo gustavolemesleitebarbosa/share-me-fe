@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdDownloadForOffline } from 'react-icons/md'
 import { Link, useParams } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
@@ -7,6 +7,7 @@ import { client, urlFor } from '../client'
 import { pinDetailMorePinQuery, pinDetailQuery } from '../utils/data'
 import MansoryLayout from './MansoryLayout'
 
+import PlaceholderImage from './PlaceholderImage'
 import Spinner from './Spinner'
 
 const PinDetail = ({ user }) => {
@@ -76,11 +77,11 @@ const PinDetail = ({ user }) => {
               <MdDownloadForOffline fontSize={40} />
             </a>
           </div>
-          <img
+          <PlaceholderImage
             src={pinDetail?.image && urlFor(pinDetail.image).url()}
-            className="rounded-t-3xl rounded-b-lg"
+            className="rounded-t-md mt-4 rounded-b-lg"
             alt='user-post'
-          ></img>
+          ></PlaceholderImage>
         </div>
         <div className='w-full p-5 flex-1 xl:min-w-620'>
           <div className='w-full flex items-center justify-end lg:justify-end'>

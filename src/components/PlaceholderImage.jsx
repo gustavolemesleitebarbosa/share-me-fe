@@ -6,7 +6,7 @@ const Shimmer = ({}) => {
   );
 };
 
-const PlaceholderImage = ({ src, alt, className }) => {
+const PlaceholderImage = ({ src, alt, className, userName}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageSrc, setImageSrc] = useState('');
   const [shimmer, setShimmer] = useState(true);
@@ -28,8 +28,9 @@ const PlaceholderImage = ({ src, alt, className }) => {
         className ={className}
         src={imageSrc}
         alt={alt}
-        style={{ opacity: imageLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out' }}
+        style={{ opacity: imageLoaded ? 1 : 0, transition: 'opacity 2s ease-in-out' }}
       />
+        <p  style={{ opacity: imageLoaded ? 1 : 0, transition: 'opacity 1.1s ease-in-out' }} className='font-semibold capitalize'>{userName}</p>
     </>
   );
 };
